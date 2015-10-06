@@ -6,7 +6,7 @@
 
 @main("Welcome to Blog") {
 Welcome to blog !
-
+@if(articles.length>0) {
 	<h1>@articles.size() articles</h1>
 	<ul>
         @for(article <- articles) {
@@ -20,6 +20,10 @@ Welcome to blog !
          <br/>
          }
     </ul>
+}else{
+	<h1>0 article</h1>
+	検索結果がありません
+}
     
     <h2>Add a new article</h2>
 
@@ -29,7 +33,7 @@ Welcome to blog !
     
     <h2>Search article</h2>
     @form(routes.Application.searchArticle()) {
-        @inputText(articleForm("body"),'_label ->"本文で検索")
+        @inputText(articleForm("search"),'_label ->"探したい件名や本文をいれてください")
         <input type="submit" value="Search">
     }
 }
