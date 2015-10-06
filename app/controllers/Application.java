@@ -84,7 +84,7 @@ public class Application extends Controller {
 	  public static Result searchArticle() {
 		  Article filledForm = articleForm.bindFromRequest().get();
 		  return ok(
-			        views.html.search.render(Article.search(filledForm))
+			        views.html.index.render(Article.search(filledForm),articleForm)
 			    );
 	  }
 }
