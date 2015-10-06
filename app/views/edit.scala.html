@@ -1,0 +1,23 @@
+@(articleForm: play.data.Form[Article],id : Long)
+
+
+@import play.data.Form
+@import helper._
+@import models.Article;
+
+@main("Edit an article") {
+Edit an article !
+
+	<h2>Edit an article</h2>
+	@form(action = routes.Application.updateArticle(id), args = 'class -> "articleForm") {
+        <fieldset>
+        <br/>
+        @inputText(articleForm("title"))
+        <br/><br/>
+        @inputText(articleForm("body"))
+        <br/><br/>
+        </fieldset>
+        <br/>
+        <input type="submit" value="Up">
+	}       
+}

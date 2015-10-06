@@ -1,0 +1,30 @@
+@(articles: List[Article])
+@* 引数リスト*@
+@import helper._
+@import models.Article;
+
+
+@main("Welcome to Blog") {
+Welcome to blog !
+
+	<h1>@articles.size() articles</h1>
+	<ul>
+        @for(article <- articles) {
+            <li>
+                <a href="/articles/show/@article.id">@article.title</a>
+                
+                @form(routes.Application.deleteArticle(article.id)) {
+                    @*削除用のフォームを設置 *@
+                    <input type="submit" value="Delete">
+                    @* 削除ボタン *@
+                }
+            </li>
+         }
+    </ul>
+    
+    <h2>Add a new article</h2>
+
+    @form(routes.Application.newArticle()) {
+        <input type="submit" value="New">
+    }
+}
