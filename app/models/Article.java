@@ -49,6 +49,8 @@ public class Article extends Model {
    public static List<Article> search(Article filledForm){
 	  
 	   String search = filledForm.search;
+	   search = search.replaceAll(" ","%");
+	   search = search.replaceAll("　","%");
 	   search = '%' + search + '%';
 	   
 	   //titleかbodyにsearchの単語があれば表示
