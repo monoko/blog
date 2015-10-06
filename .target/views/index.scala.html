@@ -1,8 +1,8 @@
-@(articles: List[Article])
+@(articles: List[Article],articleForm: play.data.Form[Article])
 @* 引数リスト*@
 @import helper._
 @import models.Article;
-
+@import play.data.Form;
 
 @main("Welcome to Blog") {
 Welcome to blog !
@@ -10,15 +10,14 @@ Welcome to blog !
 	<h1>@articles.size() articles</h1>
 	<ul>
         @for(article <- articles) {
-            <li>
-                <a href="/articles/show/@article.id">@article.title</a>
-                
-                @form(routes.Application.deleteArticle(article.id)) {
+            @article.created_at
+            	<a href="/articles/show/@article.id">@article.title</a>
+            	@form(routes.Application.deleteArticle(article.id)) {
                     @*削除用のフォームを設置 *@
                     <input type="submit" value="Delete">
                     @* 削除ボタン *@
                 }
-            </li>
+         <br/>
          }
     </ul>
     
@@ -26,5 +25,11 @@ Welcome to blog !
 
     @form(routes.Application.newArticle()) {
         <input type="submit" value="New">
+    }
+    
+    <h2>Search article</h2>
+    @form(routes.Application.searchArticle()) {
+        @inputText(articleForm("body"),'_label ->"本文で検索")
+        <input type="submit" value="Search">
     }
 }

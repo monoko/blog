@@ -21,7 +21,7 @@ public class Application extends Controller {
 	  //記事一覧
 	  public static Result indexArticle() {
 		  return ok(
-			        views.html.index.render(Article.all())
+			        views.html.index.render(Article.all(),articleForm)
 			    );
 	  }
 	  
@@ -78,5 +78,13 @@ public class Application extends Controller {
 		  article.save();
 	      
 		  return redirect(routes.Application.indexArticle());
+	  }
+	  
+	//記事検索  
+	  public static Result searchArticle() {
+		  Article filledForm = articleForm.bindFromRequest().get();
+		  return ok(
+			        views.html.search.render(Article.search(filledForm))
+			    );
 	  }
 }
