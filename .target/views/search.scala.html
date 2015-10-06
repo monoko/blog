@@ -1,0 +1,19 @@
+@(articles: List[Article])
+@* 引数リスト*@
+@import helper._
+@import models.Article;
+@import play.data.Form;
+@import helper.twitterBootstrap._
+
+@main("検索結果") {
+	@if(articles.length>0) {
+          検索結果一覧
+    <br/><br/>
+		@for((article) <- articles){
+        <a href="/articles/show/@article.id">@article.title</a>
+        <br/>
+        }
+    }else{
+    			検索結果はありません
+    }	
+}

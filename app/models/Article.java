@@ -6,11 +6,14 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.avaje.ebean.ExpressionList;
+
 import play.data.Form;
 import play.db.ebean.Model;
 
 @Entity
 public class Article extends Model {
+	private static final String Select = null;
 	@Id
 	public Long id;
     public String title;
@@ -38,5 +41,12 @@ public class Article extends Model {
     	return article;
     }
    
-   
+   public static List<Article> search(Article filledForm){
+	  
+	   String body = filledForm.body;
+	   body = '%'+body+'%';
+	   ExpressionList<Article> articlelist = Article.find.where().ilike("body",body);
+	   List<Article> articles =  articlelist.findList();
+	   return articles;
+   }
 }
