@@ -1,16 +1,19 @@
 package controllers;
 
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
+
 import models.Article;
-import play.*;
+import models.MonthlyCalendar;
 import play.data.Form;
-import play.mvc.*;
-import views.html.*;
+import play.mvc.Controller;
+import play.mvc.Result;
+
 
 public class Application extends Controller {
 	  
 	  static Form<Article> articleForm = Form.form(Article.class);
+	  static Form<MonthlyCalendar> monthlyForm = Form.form(MonthlyCalendar.class);
 
 	  //indexArticleへリダイレクト
 	  public static Result index() {
@@ -20,8 +23,9 @@ public class Application extends Controller {
 	  
 	  //記事一覧
 	  public static Result indexArticle() {
+		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
 		  return ok(
-			        views.html.index.render(Article.all(),articleForm)
+			        views.html.index.render(Article.all(),articleForm, monthlyCalendar ,monthlyCalendar.list(),monthlyForm, monthlyCalendar.yearList())
 			    );
 	  }
 	  
@@ -38,6 +42,7 @@ public class Application extends Controller {
 		  Article filledForm = articleForm.bindFromRequest().get();
 		  filledForm.created_at = (Date) Calendar.getInstance().getTime();
 		  filledForm.updated_at = (Date) Calendar.getInstance().getTime();
+		  
 		  filledForm.save();
 	      
 		  return redirect(routes.Application.indexArticle());
@@ -83,8 +88,18 @@ public class Application extends Controller {
 	//記事検索  
 	  public static Result searchArticle() {
 		  Article filledForm = articleForm.bindFromRequest().get();
+		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
 		  return ok(
-			        views.html.index.render(Article.search(filledForm),articleForm)
+			        views.html.index.render(Article.search(filledForm),articleForm, monthlyCalendar,monthlyCalendar.list(),monthlyForm, monthlyCalendar.yearList())
 			    );
 	  }
+	//月別表示  
+	  public static Result monthlyArticle() {
+		  MonthlyCalendar selectedForm = monthlyForm.bindFromRequest().get();
+		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar(selectedForm);
+		  return ok(
+			        views.html.index.render(Article.all(),articleForm,monthlyCalendar,monthlyCalendar.list(),monthlyForm, monthlyCalendar.yearList())
+			    );
+	  }
+  
 }
