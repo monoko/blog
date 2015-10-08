@@ -1,4 +1,11 @@
-@(articles: List[Article],articleForm: play.data.Form[Article])
+@(
+	articles: List[Article],
+	articleForm: play.data.Form[Article],
+	monthlyCalendar :MonthlyCalendar,
+	monthlyCalendarList: Array[Array[Int]],
+	monthlyForm: play.data.Form[MonthlyCalendar],
+	yearList: LinkedHashMap[String,String] 
+	)
 @* 引数リスト*@
 @import helper._
 @import models.Article;
@@ -21,7 +28,7 @@ Welcome to blog !
          }
     </ul>
 }else{
-	<h1>0 article</h1>
+	<h2>0 article</h2>
 	検索結果がありません
 }
     
@@ -36,4 +43,56 @@ Welcome to blog !
         @inputText(articleForm("search"),'_label ->"探したい件名や本文をいれてください")
         <input type="submit" value="Search">
     }
+    
+    <h2>Calendar</h2>
+    @monthlyCalendar.year 年　@monthlyCalendar.month　月
+    <br/><br/>
+    
+    <table border="1" width="150" cellspacing="0" cellpadding="10">
+    	<head>
+    		<tr>
+    			<td>日</td>
+    			<td>月</td>
+    			<td>火</td>
+    			<td>水</td>
+    			<td>木</td>
+    			<td>金</td>
+    			<td>土</td>
+    		<tr/>
+    	</head>
+    	<body>
+	    @for(row <- 0 to monthlyCalendarList.length-1){
+	    	<tr>
+	    	@for(col <-0 to monthlyCalendarList(row).length-1){
+	    		@if(monthlyCalendarList(row)(col)==0){
+	    			<td></td>
+	    		}else{
+	    		<td>
+	    		@monthlyCalendarList(row)(col)
+	    		</td>
+	    		}
+	    	}
+	    	<tr/>
+	    }
+	    </body>
+    </table>
+    
+    <br/><br/>
+	その月の最初の日の曜日（日月火水木金土）（１２３４５６７）：@monthlyCalendar.firstday
+	<br/><br/>
+	その月の最後の日：@monthlyCalendar.lastday
+	<br/><br/>
+	
+	@form(routes.Application.monthlyArticle()) {
+		@select(
+                monthlyForm("year"),options(yearList) , 
+                '_label -> ""
+        )
+        
+        @select(
+                monthlyForm("month"),options("1"-> "1", "2"-> "2", "3"-> "3", "4"-> "4", "5"-> "5", "6"-> "6", "7"-> "7", "8"-> "8", "9"-> "9", "10"-> "10", "11"-> "11", "12"-> "12") , 
+                '_label -> ""
+        )
+        <input type="submit" value="表示">
+	}
 }

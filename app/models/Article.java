@@ -1,9 +1,8 @@
 package models;
 
 import java.util.Date;
-
-import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -11,12 +10,11 @@ import javax.persistence.Transient;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.ExpressionList;
 
-import play.data.Form;
 import play.db.ebean.Model;
 
 @Entity
 public class Article extends Model {
-	private static final String Select = null;
+	
 	@Id
 	public Long id;
     public String title;
@@ -55,7 +53,6 @@ public class Article extends Model {
 	   
 	   //titleかbodyにsearchの単語があれば表示
 	   ExpressionList<Article> articlelist = 
-			   //Article.find.where().or(Article.find.where().ilike("title",search), Article.find.where().ilike("body",search));
 			   Article.find.where().or(Expr.like("title", search),Expr.like("body", search));
 	   List<Article> articles =  articlelist.findList();
 	   return articles;
