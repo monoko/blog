@@ -25,7 +25,7 @@ public class Application extends Controller {
 	  public static Result indexArticle() {
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
 		  return ok(
-			        views.html.index.render(Article.all(),articleForm, monthlyCalendar ,monthlyCalendar.list(),monthlyForm, monthlyCalendar.yearList())
+			        views.html.index.render(Article.all(),articleForm, monthlyCalendar ,monthlyCalendar.calendarList(),monthlyForm, monthlyCalendar.yearList())
 			    );
 	  }
 	  
@@ -90,7 +90,7 @@ public class Application extends Controller {
 		  Article filledForm = articleForm.bindFromRequest().get();
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
 		  return ok(
-			        views.html.index.render(Article.search(filledForm),articleForm, monthlyCalendar,monthlyCalendar.list(),monthlyForm, monthlyCalendar.yearList())
+			        views.html.index.render(Article.search(filledForm),articleForm, monthlyCalendar,monthlyCalendar.calendarList(),monthlyForm, monthlyCalendar.yearList())
 			    );
 	  }
 	//月別表示  
@@ -98,7 +98,7 @@ public class Application extends Controller {
 		  MonthlyCalendar selectedForm = monthlyForm.bindFromRequest().get();
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar(selectedForm);
 		  return ok(
-			        views.html.index.render(Article.all(),articleForm,monthlyCalendar,monthlyCalendar.list(),monthlyForm, monthlyCalendar.yearList())
+			        views.html.index.render(Article.all(),articleForm,monthlyCalendar,monthlyCalendar.calendarList(),monthlyForm, monthlyCalendar.yearList())
 			    );
 	  }
   

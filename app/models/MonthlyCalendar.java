@@ -1,8 +1,11 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+
+import models.Day;
 
 
 
@@ -14,7 +17,7 @@ public class MonthlyCalendar{
 	public int firstday;
 	public int lastday;
 	
-	// 現在年月
+	// 現在年月　コンストラクタ
 	public MonthlyCalendar(){
 		Calendar cal = Calendar.getInstance(); 
 		this.year = cal.get(Calendar.YEAR);
@@ -24,7 +27,7 @@ public class MonthlyCalendar{
 		this.lastday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
-	// 選択年月
+	// 選択年月　コンストラクタ
 	public MonthlyCalendar(MonthlyCalendar selectedForm){
 		this.year = selectedForm.year;
 		this.month = selectedForm.month;
@@ -36,24 +39,18 @@ public class MonthlyCalendar{
 	}
 	
 	// 配列の取得
-	public int[][] list(){
-		
-		//配列の取得
-		int[][] monthlyCalendarList = new int[5][7];
-		int row = 0;
-		int col = this.firstday-1;
-		for (int date = 1; date <= this.lastday; date++) {
-			monthlyCalendarList[row][col] = date;
-			if (col == 6) {
-				row++;
-				col = 0;//初期化
-			} else {
-				col++;
-			}
+	public ArrayList<Day> calendarList(){
+		ArrayList<Day> calendarList = new ArrayList<>();
+		Calendar cal = Calendar.getInstance();
+		this.lastday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		int week = cal.get(Calendar.DAY_OF_WEEK);
+		for(int i = 1; i <= this.lastday; i++){
+		    cal.set(day, i);
+		    calendarList.add(new Day(day ,week));
 		}
-		return monthlyCalendarList;
+		return calendarList;
 	}
-	
+
 	// 年のハッシュマップ  セレクトボックス用
 	public LinkedHashMap<String,String> yearList(){
 		LinkedHashMap<String,String> yearList = new LinkedHashMap<>();
