@@ -2,7 +2,7 @@
 	articles: List[Article],
 	articleForm: play.data.Form[Article],
 	monthlyCalendar :MonthlyCalendar,
-	monthlyCalendarList: Array[Array[Int]],
+	calendarList: List[Day],
 	monthlyForm: play.data.Form[MonthlyCalendar],
 	yearList: LinkedHashMap[String,String] 
 	)
@@ -61,7 +61,8 @@ Welcome to blog !
     		<tr/>
     	</head>
     	<body>
-	    @for(row <- 0 to monthlyCalendarList.length-1){
+    	
+	    @*for(row <- 0 to monthlyCalendarList.length-1){
 	    	<tr>
 	    	@for(col <-0 to monthlyCalendarList(row).length-1){
 	    		@if(monthlyCalendarList(row)(col)==0){
@@ -73,11 +74,25 @@ Welcome to blog !
 	    		}
 	    	}
 	    	<tr/>
-	    }
+	    }*@
+	    
 	    </body>
     </table>
-    
     <br/><br/>
+    カレンダーリストのサイズ:@calendarList.size()
+    <br/><br/>
+    日付: @calendarList.get(1).day
+    <br/><br/>
+    曜日: @calendarList.get(1).week
+    <br/><br/>
+    記事の有無: @calendarList.get(1).article
+    <br/><br/>
+    
+    @for(i <- 1 to calendarList.size()){
+    	@i
+    }
+    <br/><br/>
+    
 	その月の最初の日の曜日（日月火水木金土）（１２３４５６７）：@monthlyCalendar.firstday
 	<br/><br/>
 	その月の最後の日：@monthlyCalendar.lastday
