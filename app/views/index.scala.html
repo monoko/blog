@@ -61,35 +61,31 @@ Welcome to blog !
     		<tr/>
     	</head>
     	<body>
-    	
-	    @*for(row <- 0 to monthlyCalendarList.length-1){
-	    	<tr>
-	    	@for(col <-0 to monthlyCalendarList(row).length-1){
-	    		@if(monthlyCalendarList(row)(col)==0){
+    	<tr>
+	    @for(v <- calendarList){
+	    		@if(v.day == 0){
 	    			<td></td>
 	    		}else{
-	    		<td>
-	    		@monthlyCalendarList(row)(col)
-	    		</td>
+		    	<td>@v.day</td>
 	    		}
-	    	}
-	    	<tr/>
-	    }*@
+	    	@if(v.week == 7){</tr><tr>}
+	    }
+	    	
 	    
 	    </body>
     </table>
     <br/><br/>
     カレンダーリストのサイズ:@calendarList.size()
     <br/><br/>
-    日付: @calendarList.get(1).day
+    日付: @calendarList.get(6).day
     <br/><br/>
-    曜日: @calendarList.get(1).week
+    曜日: @calendarList.get(6).week
     <br/><br/>
-    記事の有無: @calendarList.get(1).article
+    記事の有無: @calendarList.get(0).isArticle
     <br/><br/>
     
-    @for(i <- 1 to calendarList.size()){
-    	@i
+    @for(v <- calendarList){
+    	@v.day
     }
     <br/><br/>
     
