@@ -51,7 +51,6 @@ public class Article extends Model {
 	   search = search.replaceAll("　","%");
 	   search = '%' + search + '%';
 	   
-	   //titleかbodyにsearchの単語があれば表示
 	   ExpressionList<Article> articlelist = 
 			   Article.find.where().or(Expr.like("title", search),Expr.like("body", search));
 	   List<Article> articles =  articlelist.findList();
