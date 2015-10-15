@@ -1,10 +1,11 @@
 @(
 	articles: List[Article],
 	articleForm: play.data.Form[Article],
-	monthlyCalendar :MonthlyCalendar,
+	monthlyCalendar: MonthlyCalendar,
 	calendarList: List[Day],
 	monthlyForm: play.data.Form[MonthlyCalendar],
-	yearList: LinkedHashMap[String,String] 
+	yearList: LinkedHashMap[String,String],
+	monthlyArticleList: List[Article]
 	)
 @* 引数リスト*@
 @import helper._
@@ -20,9 +21,7 @@ Welcome to blog !
             @article.created_at
             	<a href="/articles/show/@article.id">@article.title</a>
             	@form(routes.Application.deleteArticle(article.id)) {
-                    @*削除用のフォームを設置 *@
-                    <input type="submit" value="Delete">
-                    @* 削除ボタン *@
+                <input type="submit" value="Delete">
                 }
          <br/>
          }
@@ -45,7 +44,7 @@ Welcome to blog !
     }
     
     <h2>Calendar</h2>
-    @monthlyCalendar.year 年　@monthlyCalendar.month　月
+    @monthlyCalendar.getYear() 年　@monthlyCalendar.getMonth()　月
     <br/><br/>
     
     <table border="1" width="150" cellspacing="0" cellpadding="10">
@@ -66,34 +65,19 @@ Welcome to blog !
 	    		@if(v.day == 0){
 	    			<td></td>
 	    		}else{
-		    	<td>@v.day</td>
+		    		@if(v.isArticle == true){
+		    			<td bgcolor="lightskyblue">@v.day</td>
+		    		}else{
+		    			<td>@v.day</td>
+		    		}
 	    		}
-	    	@if(v.week == 7){</tr><tr>}
+	    	@if(v.week == 7){
+	    		</tr><tr>
+	    	}
 	    }
-	    	
-	    
 	    </body>
     </table>
-    <br/><br/>
-    カレンダーリストのサイズ:@calendarList.size()
-    <br/><br/>
-    日付: @calendarList.get(6).day
-    <br/><br/>
-    曜日: @calendarList.get(6).week
-    <br/><br/>
-    記事の有無: @calendarList.get(0).isArticle
-    <br/><br/>
     
-    @for(v <- calendarList){
-    	@v.day
-    }
-    <br/><br/>
-    
-	その月の最初の日の曜日（日月火水木金土）（１２３４５６７）：@monthlyCalendar.firstday
-	<br/><br/>
-	その月の最後の日：@monthlyCalendar.lastday
-	<br/><br/>
-	
 	@form(routes.Application.monthlyArticle()) {
 		@select(
                 monthlyForm("year"),options(yearList) , 
