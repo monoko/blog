@@ -8,10 +8,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.avaje.ebean.ExpressionList;
-
-import play.db.ebean.Model.Finder;
-
 
 
 public class MonthlyCalendar{
@@ -19,7 +15,7 @@ public class MonthlyCalendar{
 	private int year;
 	private int month;
 	private int day;
-	private int firstday;
+	private int firstweek;
 	private int lastday;
 	private List<Article> result;
 
@@ -44,7 +40,7 @@ public class MonthlyCalendar{
 	}
 
 	public int getFirstday() {
-		return firstday;
+		return firstweek;
 	}
 
 	public int getLastday() {
@@ -62,7 +58,7 @@ public class MonthlyCalendar{
 		this.month = cal.get(Calendar.MONTH) + 1;
 		this.day = 1;
 		cal.set(this.year, this.month-1, 1);
-		this.ReturnValue(cal);
+		this.initialize(cal);
 	}
 	
 	// 年月コンストラクタ　選択後
@@ -71,12 +67,12 @@ public class MonthlyCalendar{
 		this.month = selectedForm.month;
 		Calendar cal = Calendar.getInstance();
 		cal.set(this.year, this.month-1, 1);
-		this.ReturnValue(cal);
+		this.initialize(cal);
 	}
 	
 	// コンストラクタの共通処理
-	public void ReturnValue(Calendar cal) {
-		this.firstday = cal.get(Calendar.DAY_OF_WEEK);
+	public void initialize(Calendar cal) {
+		this.firstweek = cal.get(Calendar.DAY_OF_WEEK);
 		this.lastday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		this.result = this.monthlyArticleList();
 	}
@@ -91,7 +87,7 @@ public class MonthlyCalendar{
 		cal.set(this.year, this.month-1, 1);
 		int week = cal.get(Calendar.DAY_OF_WEEK);
 		
-		for(int i = 1; i < this.firstday; i++){
+		for(int i = 1; i < this.firstweek; i++){
 			calendarList.add(new Day(0 ,0, false));
 		}
 		
@@ -105,9 +101,9 @@ public class MonthlyCalendar{
 			}
 		}
 		
-		int lastWeek = calendarList.get(this.firstday+this.lastday-2).week;
+		int lastWeek = calendarList.get(calendarList.size()-1).week;
 		if(lastWeek != 7){
-			for(int i = 1; i <= 7-lastWeek; i++){
+			for(int i = lastWeek; i < 7; i++){
 			calendarList.add(new Day(0 ,0, false));
 			}
 		}
@@ -142,6 +138,7 @@ public class MonthlyCalendar{
 		LinkedHashMap<String,String> yearList = new LinkedHashMap<>();
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
+		//　過去10年を取得
 		for(int i = year; i >= year-10; i--){
 			yearList.put(Integer.toString(i),Integer.toString(i));
 		}
@@ -164,23 +161,13 @@ public class MonthlyCalendar{
 	}	
 	
 	// 月の記事一覧
-	public static Finder<Date, Article> find = new Finder<Date, Article>(Date.class, Article.class);
-	
 	private List<Article> monthlyArticleList(){
 		
-		Calendar cal = Calendar.getInstance();
-		cal.clear();
+		int year = this.year;
+		int month = this.month;
 		
-		cal.set(this.year, this.month-1, 1, 0, 0, 0);
-		Date startDate = cal.getTime();
-		
-		cal.set(this.year, this.month, 1, 0, 0, 0);
-		Date endDate = cal.getTime();
-		
-		ExpressionList<Article> monthlyArticles = 
-				Article.find.where().between("created_at", startDate, endDate);
-		List<Article> monthlyArticleList =  monthlyArticles.findList();
-		
+		List<Article> monthlyArticleList = Article.getMonthly(year, month);
+
 		return monthlyArticleList;
 	}
 }
