@@ -23,16 +23,8 @@ public class MonthlyCalendar{
 		return year;
 	}
 	
-	public void setYear(int year) {
-		this.year = year;
-	}
-
 	public int getMonth() {
 		return month;
-	}
-	
-	public void setMonth(int month) {
-		this.month = month;
 	}
 
 	public int getDay() {
@@ -62,9 +54,9 @@ public class MonthlyCalendar{
 	}
 	
 	// 年月コンストラクタ　選択後
-	public MonthlyCalendar(MonthlyCalendar selectedForm){
-		this.year = selectedForm.year;
-		this.month = selectedForm.month;
+	public MonthlyCalendar(int year, int month){
+		this.year = year;
+		this.month = month;
 		Calendar cal = Calendar.getInstance();
 		cal.set(this.year, this.month-1, 1);
 		this.initialize(cal);
@@ -163,11 +155,6 @@ public class MonthlyCalendar{
 	// 月の記事一覧
 	private List<Article> monthlyArticleList(){
 		
-		int year = this.year;
-		int month = this.month;
-		
-		List<Article> monthlyArticleList = Article.getMonthly(year, month);
-
-		return monthlyArticleList;
+		return Article.getMonthly(this.year, this.month);
 	}
 }
