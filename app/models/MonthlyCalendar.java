@@ -142,11 +142,26 @@ public class MonthlyCalendar{
 		LinkedHashMap<String,String> yearList = new LinkedHashMap<>();
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
-		for(int i = year-10; i <= year; i++){
+		for(int i = year; i >= year-10; i--){
 			yearList.put(Integer.toString(i),Integer.toString(i));
 		}
 		return yearList;
 	}
+	
+	// 月のハッシュマップ  セレクトボックス用
+	public LinkedHashMap<String,String> monthList(){
+		LinkedHashMap<String,String> monthList = new LinkedHashMap<>();
+		Calendar cal = Calendar.getInstance();
+		int month = cal.get(Calendar.MONTH)+1;
+		monthList.put(Integer.toString(month),Integer.toString(month));
+		for(int i = 1; i <= 12; i++){
+			if(i == month){
+			}else{
+				monthList.put(Integer.toString(i),Integer.toString(i));
+			}
+		}
+		return monthList;
+	}	
 	
 	// 月の記事一覧
 	public static Finder<Date, Article> find = new Finder<Date, Article>(Date.class, Article.class);

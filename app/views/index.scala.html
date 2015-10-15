@@ -5,6 +5,7 @@
 	calendarList: List[Day],
 	monthlyForm: play.data.Form[MonthlyCalendar],
 	yearList: LinkedHashMap[String,String],
+	monthList: LinkedHashMap[String,String],
 	monthlyArticleList: List[Article]
 	)
 @* 引数リスト*@
@@ -85,7 +86,7 @@ Welcome to blog !
         )
         
         @select(
-                monthlyForm("month"),options("1"-> "1", "2"-> "2", "3"-> "3", "4"-> "4", "5"-> "5", "6"-> "6", "7"-> "7", "8"-> "8", "9"-> "9", "10"-> "10", "11"-> "11", "12"-> "12") , 
+                monthlyForm("month"),options(monthList) , 
                 '_label -> ""
         )
         <input type="submit" value="表示">
