@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,5 +56,22 @@ public class Article extends Model {
 			   Article.find.where().or(Expr.like("title", search),Expr.like("body", search));
 	   List<Article> articles =  articlelist.findList();
 	   return articles;
+   }
+   
+   public static List<Article> getMonthly(int year, int month) {
+	    Calendar cal = Calendar.getInstance();
+		cal.clear();
+		
+		cal.set(year, month-1, 1, 0, 0, 0);
+		Date startDate = cal.getTime();
+		
+		cal.set(year, month, 1, 0, 0, 0);
+		Date endDate = cal.getTime();
+		
+		ExpressionList<Article> monthlyArticles = 
+				Article.find.where().between("created_at", startDate, endDate);
+		List<Article> monthlyArticleList =  monthlyArticles.findList();
+	    
+		return monthlyArticleList;
    }
 }
