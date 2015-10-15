@@ -17,13 +17,13 @@ public class Application extends Controller {
 
 	  //　indexArticleへリダイレクト
 	  public static Result index() {
-	    return redirect(routes.Application.indexArticle());
-	    
+		  return redirect(routes.Application.indexArticle());
 	  }
 	  
 	  //　記事一覧
 	  public static Result indexArticle() {
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
+		  
 		  return ok(
 			        views.html.index.render(
 			        		monthlyCalendar.getResult(),
@@ -40,6 +40,7 @@ public class Application extends Controller {
 	  
 	  //　記事作成画面へ
 	  public static Result newArticle() {
+		  
 		  return ok(
 			        views.html.newedit.render(articleForm)
 			    );
@@ -59,6 +60,7 @@ public class Application extends Controller {
 	  
 	  //　記事詳細
 	  public static Result showArticle(Long id) {
+		  
 		  return ok(
 			        views.html.show.render(Article.show(id))
 			    ); 
@@ -75,6 +77,7 @@ public class Application extends Controller {
 	  //　記事編集
 	  public static Result editArticle(Long id) {
 		  articleForm = articleForm.fill(Article.show(id));
+		  
 		  return ok(
 				  views.html.edit.render(articleForm,id)
 			    );
@@ -98,6 +101,7 @@ public class Application extends Controller {
 	  public static Result searchArticle() {
 		  Article filledForm = articleForm.bindFromRequest().get();
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
+		  
 		  return ok(
 			        views.html.index.render(
 			        		Article.search(filledForm),

@@ -14,7 +14,6 @@ public class MonthlyCalendar{
 
 	private int year;
 	private int month;
-	private int day;
 	private int firstweek;
 	private int lastday;
 	private List<Article> result;
@@ -25,10 +24,6 @@ public class MonthlyCalendar{
 	
 	public int getMonth() {
 		return month;
-	}
-
-	public int getDay() {
-		return day;
 	}
 
 	public int getFirstday() {
@@ -48,7 +43,6 @@ public class MonthlyCalendar{
 		Calendar cal = Calendar.getInstance(); 
 		this.year = cal.get(Calendar.YEAR);
 		this.month = cal.get(Calendar.MONTH) + 1;
-		this.day = 1;
 		cal.set(this.year, this.month-1, 1);
 		this.initialize(cal);
 	}
@@ -79,10 +73,12 @@ public class MonthlyCalendar{
 		cal.set(this.year, this.month-1, 1);
 		int week = cal.get(Calendar.DAY_OF_WEEK);
 		
+		// 初日(1日)が日曜日以外の場合 初日より前を0で埋める
 		for(int i = 1; i < this.firstweek; i++){
 			calendarList.add(new Day(0 ,0, false));
 		}
 		
+		// 初日～最終日
 		for(int i = 1; i <= this.lastday; i++ ){
 			int day = i;
 			calendarList.add(new Day(day ,week, this.isArticle(day)));
@@ -93,12 +89,12 @@ public class MonthlyCalendar{
 			}
 		}
 		
+		// 最終日が土曜日以外の場合 最終日より後を0で埋める
 		int lastWeek = calendarList.get(calendarList.size()-1).week;
-		if(lastWeek != 7){
-			for(int i = lastWeek; i < 7; i++){
+		for(int i = lastWeek; i < 7; i++){
 			calendarList.add(new Day(0 ,0, false));
-			}
 		}
+		
 		return calendarList;
 	}
 	
@@ -118,9 +114,11 @@ public class MonthlyCalendar{
 			Date createdDay = DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
 			
 			if (createdDay.equals(selectedDay)){
+				
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	
@@ -134,6 +132,7 @@ public class MonthlyCalendar{
 		for(int i = year; i >= year-10; i--){
 			yearList.put(Integer.toString(i),Integer.toString(i));
 		}
+		
 		return yearList;
 	}
 	
@@ -149,12 +148,12 @@ public class MonthlyCalendar{
 				monthList.put(Integer.toString(i),Integer.toString(i));
 			}
 		}
+		
 		return monthList;
 	}	
 	
 	// 月の記事一覧
 	private List<Article> monthlyArticleList(){
-		
 		return Article.getMonthly(this.year, this.month);
 	}
 }

@@ -42,6 +42,7 @@ public class Article extends Model {
 
    public static Article show(Long id){
     	Article article = Article.find.byId(id);
+    	
     	return article;
     }
    
@@ -55,6 +56,7 @@ public class Article extends Model {
 	   ExpressionList<Article> articlelist = 
 			   Article.find.where().or(Expr.like("title", search),Expr.like("body", search));
 	   List<Article> articles =  articlelist.findList();
+	   
 	   return articles;
    }
    
