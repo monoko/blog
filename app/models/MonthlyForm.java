@@ -4,9 +4,4 @@ public class MonthlyForm {
 	
 	public int year;
 	public int month;
-	
-	public MonthlyForm(){
-		
-	}
-
 }

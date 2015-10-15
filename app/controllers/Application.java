@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import models.Article;
 import models.MonthlyCalendar;
+import models.MonthlyForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -12,7 +13,7 @@ import play.mvc.Result;
 public class Application extends Controller {
 	  
 	  static Form<Article> articleForm = Form.form(Article.class);
-	  static Form<MonthlyCalendar> monthlyForm = Form.form(MonthlyCalendar.class);
+	  static Form<MonthlyForm> monthlyForm = Form.form(MonthlyForm.class);
 
 	  //　indexArticleへリダイレクト
 	  public static Result index() {
@@ -112,8 +113,8 @@ public class Application extends Controller {
 	  }
 	//　カレンダーと月別検索
 	  public static Result monthlyArticle() {
-		  MonthlyCalendar selectedForm = monthlyForm.bindFromRequest().get();
-		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar(selectedForm);
+		  MonthlyForm selectedForm = monthlyForm.bindFromRequest().get();
+		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar(selectedForm.year, selectedForm.month);
 		  
 		  return ok(
 			        views.html.index.render(
