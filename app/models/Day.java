@@ -10,6 +10,5 @@ public class Day {
 		this.day = day;
 		this.week = week;
 		this.isArticle = isArticle;
-		
 	}
 }

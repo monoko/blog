@@ -24,7 +24,16 @@ public class Application extends Controller {
 	  public static Result indexArticle() {
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
 		  return ok(
-			        views.html.index.render(monthlyCalendar.getResult(),articleForm, monthlyCalendar ,monthlyCalendar.calendarList(),monthlyForm, monthlyCalendar.yearList(),monthlyCalendar.getResult())
+			        views.html.index.render(
+			        		monthlyCalendar.getResult(),
+			        		articleForm,
+			        		monthlyCalendar,
+			        		monthlyCalendar.calendarList(),
+			        		monthlyForm,
+			        		monthlyCalendar.yearList(),
+			        		monthlyCalendar.monthList(),
+			        		monthlyCalendar.getResult()
+			        )
 			    );
 	  }
 	  
@@ -89,7 +98,16 @@ public class Application extends Controller {
 		  Article filledForm = articleForm.bindFromRequest().get();
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
 		  return ok(
-			        views.html.index.render(Article.search(filledForm),articleForm, monthlyCalendar,monthlyCalendar.calendarList(),monthlyForm, monthlyCalendar.yearList(),monthlyCalendar.getResult())
+			        views.html.index.render(
+			        		Article.search(filledForm),
+			        		articleForm,
+			        		monthlyCalendar,
+			        		monthlyCalendar.calendarList(),
+			        		monthlyForm,
+			        		monthlyCalendar.yearList(),
+			        		monthlyCalendar.monthList(),
+			        		monthlyCalendar.getResult()
+			        )
 			    );
 	  }
 	//　カレンダーと月別検索
@@ -98,7 +116,16 @@ public class Application extends Controller {
 		  MonthlyCalendar monthlyCalendar = new MonthlyCalendar(selectedForm);
 		  
 		  return ok(
-			        views.html.index.render(monthlyCalendar.getResult(),articleForm,monthlyCalendar,monthlyCalendar.calendarList(),monthlyForm, monthlyCalendar.yearList(),monthlyCalendar.getResult())
+			        views.html.index.render(
+			        		monthlyCalendar.getResult(),
+			        		articleForm,
+			        		monthlyCalendar,
+			        		monthlyCalendar.calendarList(),
+			        		monthlyForm,
+			        		monthlyCalendar.yearList(),
+			        		monthlyCalendar.monthList(),
+			        		monthlyCalendar.getResult()
+			        )
 			    );
 	  }
 }
