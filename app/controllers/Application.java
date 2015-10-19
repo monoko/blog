@@ -8,13 +8,41 @@ import models.MonthlyForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-
+import play.data.*;
+import static play.data.Form.*; 
+import models.User;
+import play.*;
+import play.mvc.*;
+import play.mvc.Http.*;
 
 public class Application extends Controller {
 	  
 	  static Form<Article> articleForm = Form.form(Article.class);
 	  static Form<MonthlyForm> monthlyForm = Form.form(MonthlyForm.class);
+	  //static Form<Login> loginForm = Form.form(Login.class);
 
+	  // ログイン画面表示
+	  public static Result login() {
+		  return ok(views.html.login.render(Form.form(User.class)));
+	  }
+	  
+	  // 認証
+	  public static Result authenticate() {
+	        Form<User> loginForm = Form.form(User.class).bindFromRequest();
+	        if (loginForm.hasErrors()) {
+	            return badRequest(views.html.login.render(loginForm));
+	        }
+	        session().clear();
+	        session("name", loginForm.get().name);
+	        return redirect(routes.Application.index());
+	   }
+	  
+	  // ログアウト
+	  public static Result logout() {
+	        session().clear();
+	        return redirect(routes.Application.login());
+	  }
+	  
 	  //　indexArticleへリダイレクト
 	  public static Result index() {
 		  return redirect(routes.Application.indexArticle());
@@ -39,6 +67,7 @@ public class Application extends Controller {
 	  }
 	  
 	  //　記事作成画面へ
+	  @Security.Authenticated(Secured.class)
 	  public static Result newArticle() {
 		  
 		  return ok(
@@ -47,6 +76,7 @@ public class Application extends Controller {
 	  }
 	  
 	  //　記事作成完了
+	  @Security.Authenticated(Secured.class)
 	  public static Result createArticle() {
 		  
 		  Article filledForm = articleForm.bindFromRequest().get();
@@ -67,6 +97,7 @@ public class Application extends Controller {
 	  }
 	  
 	  //　記事削除
+	  @Security.Authenticated(Secured.class)
 	  public static Result deleteArticle(Long id) {
 		  
 		  Article.delete(id);
@@ -75,6 +106,7 @@ public class Application extends Controller {
 	  }
 	  
 	  //　記事編集
+	  @Security.Authenticated(Secured.class)
 	  public static Result editArticle(Long id) {
 		  articleForm = articleForm.fill(Article.show(id));
 		  
@@ -84,6 +116,7 @@ public class Application extends Controller {
 	  }
 	  
 	  //　記事更新
+	  @Security.Authenticated(Secured.class)
 	  public static Result updateArticle(Long id) {
 		  
 		  Article filledForm = articleForm.bindFromRequest().get();

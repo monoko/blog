@@ -1,0 +1,23 @@
+@(loginForm: play.data.Form[User])
+
+@import helper._
+@import models.User;
+@import play.data.Form;
+
+@main("login") {
+	Login
+  @form(routes.Application.authenticate) {
+    <h1>Sign in</h1>
+    @if(loginForm.hasGlobalErrors) {
+    <p class="error">
+        @loginForm.globalError.message
+    </p>
+    }
+    @inputText(loginForm("name"))
+    @inputPassword(loginForm("password"))
+    <p>
+      <button type="submit">Login</button>
+    </p>
+  }	
+}
+
